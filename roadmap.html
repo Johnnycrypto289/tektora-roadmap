@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tektora AI — Road to $1B</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #000;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+/* ===== HERO ===== */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(ellipse at 30% 50%, rgba(107,33,168,0.15) 0%, transparent 50%),
+              radial-gradient(ellipse at 70% 50%, rgba(6,182,212,0.1) 0%, transparent 50%);
+  animation: ambientMove 20s ease-in-out infinite;
+}
+
+@keyframes ambientMove {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-3%, 2%); }
+}
+
+.hero-content { position: relative; z-index: 1; max-width: 900px; }
+
+.hero h1 {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 16px;
+  letter-spacing: -0.03em;
+}
+
+.hero h1 .gradient {
+  background: linear-gradient(135deg, #6B21A8, #2563EB, #06B6D4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero .subtitle {
+  font-size: 1.25rem;
+  color: #a1a1aa;
+  margin-bottom: 12px;
+  font-weight: 400;
+}
+
+.hero .team {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9rem;
+  color: #06B6D4;
+  margin-bottom: 40px;
+  letter-spacing: 0.05em;
+}
+
+.hero .current-marker {
+  display: inline-block;
+  background: linear-gradient(135deg, #6B21A8, #2563EB);
+  padding: 10px 28px;
+  border-radius: 100px;
+  font-weight: 700;
+  font-size: 1rem;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(107,33,168,0.4); }
+  50% { box-shadow: 0 0 40px rgba(107,33,168,0.8); }
+}
+
+/* ===== TIMELINE ===== */
+.timeline-section {
+  padding: 80px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.timeline-section::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(to bottom, #6B21A8, #2563EB, #06B6D4, #10B981, #F59E0B, #EF4444);
+  transform: translateX(-50%);
+}
+
+@media (max-width: 768px) {
+  .timeline-section::before { left: 30px; }
+}
+
+.phase {
+  position: relative;
+  margin-bottom: 100px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.phase:nth-child(odd) { flex-direction: row; }
+.phase:nth-child(even) { flex-direction: row-reverse; }
+
+@media (max-width: 768px) {
+  .phase, .phase:nth-child(even) { flex-direction: row; }
+}
+
+.phase-dot {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  z-index: 2;
+}
+
+@media (max-width: 768px) {
+  .phase-dot { left: 30px; }
+}
+
+.phase-dot.current {
+  width: 36px;
+  height: 36px;
+  animation: pulseDot 2s ease-in-out infinite;
+}
+
+@keyframes pulseDot {
+  0%, 100% { box-shadow: 0 0 15px var(--dot-color); }
+  50% { box-shadow: 0 0 35px var(--dot-color); }
+}
+
+.phase-card {
+  width: calc(50% - 60px);
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 32px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.phase-card:hover {
+  border-color: rgba(255,255,255,0.15);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+}
+
+@media (max-width: 768px) {
+  .phase-card { width: calc(100% - 70px); margin-left: 60px; }
+}
+
+.phase:nth-child(odd) .phase-card { margin-left: auto; }
+.phase:nth-child(even) .phase-card { margin-right: auto; }
+
+@media (max-width: 768px) {
+  .phase:nth-child(odd) .phase-card,
+  .phase:nth-child(even) .phase-card { margin-left: 60px; margin-right: 0; }
+}
+
+.phase-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.phase-step {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-weight: 700;
+}
+
+.phase-revenue {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 2rem;
+  font-weight: 900;
+  margin-bottom: 4px;
+  letter-spacing: -0.02em;
+}
+
+.phase-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.phase-timeline {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  color: #71717a;
+  margin-bottom: 20px;
+}
+
+.phase-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.phase-block h4 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #a1a1aa;
+  margin-bottom: 8px;
+}
+
+.phase-block ul {
+  list-style: none;
+  padding: 0;
+}
+
+.phase-block ul li {
+  font-size: 0.9rem;
+  color: #d4d4d8;
+  padding: 4px 0;
+  padding-left: 20px;
+  position: relative;
+  line-height: 1.5;
+}
+
+.phase-block ul li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+}
+
+.you-are-here {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(239,68,68,0.15);
+  border: 1px solid rgba(239,68,68,0.4);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  color: #EF4444;
+  font-weight: 700;
+  margin-bottom: 20px;
+  animation: youAreHere 2s ease-in-out infinite;
+}
+
+@keyframes youAreHere {
+  0%, 100% { box-shadow: 0 0 10px rgba(239,68,68,0.2); }
+  50% { box-shadow: 0 0 25px rgba(239,68,68,0.5); }
+}
+
+.metrics-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.metric {
+  background: rgba(255,255,255,0.04);
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+}
+
+.metric .num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.3rem;
+  font-weight: 800;
+}
+
+.metric .label {
+  font-size: 0.7rem;
+  color: #71717a;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 2px;
+}
+
+.completed-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(16,185,129,0.15);
+  border: 1px solid rgba(16,185,129,0.3);
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  color: #10B981;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+/* ===== SUMMARY ===== */
+.summary {
+  padding: 100px 20px;
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.summary h2 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 900;
+  margin-bottom: 24px;
+  letter-spacing: -0.03em;
+}
+
+.summary .quote {
+  font-size: 1.2rem;
+  color: #a1a1aa;
+  font-style: italic;
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.summary .attr {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  color: #06B6D4;
+}
+
+.scale-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  max-width: 1100px;
+  margin: 60px auto 0;
+  padding: 0 20px;
+}
+
+.scale-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 24px;
+  text-align: left;
+}
+
+.scale-card .sc-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.8rem;
+  font-weight: 900;
+  margin-bottom: 4px;
+}
+
+.scale-card .sc-label {
+  font-size: 0.85rem;
+  color: #a1a1aa;
+  margin-bottom: 12px;
+}
+
+.scale-card .sc-detail {
+  font-size: 0.85rem;
+  color: #71717a;
+  line-height: 1.5;
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <h1>Road to <span class="gradient">$1 Billion</span></h1>
+    <p class="subtitle">Tektora AI — The Visual Roadmap</p>
+    <p class="team">TEAM: Johnathan Eaddy (Owner) + Mason (AI Chief of Staff)</p>
+    <p class="team" style="color:#71717a; margin-bottom: 30px;">HEADCOUNT: 1 human + AI agents. That's it.</p>
+    <div class="current-marker">📍 YOU ARE HERE — Step 3: Solve Manually, Get Paid to Learn</div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section class="timeline-section">
+
+<!-- PHASE 1: $0 → FOUNDATION -->
+<div class="phase">
+  <div class="phase-dot" style="background: #10B981; --dot-color: #10B981; top: 30px;"></div>
+  <div class="phase-card" style="--accent: #10B981;">
+    <div class="completed-badge">✅ COMPLETED</div>
+    <div class="phase-header">
+      <span class="phase-step" style="background: rgba(16,185,129,0.2); color: #10B981;">STEP 1-2</span>
+    </div>
+    <div class="phase-revenue" style="color: #10B981;">$0</div>
+    <div class="phase-title">Foundation — Find the Pain</div>
+    <div class="phase-timeline">COMPLETED: March 12-13, 2026</div>
+    <div class="phase-grid">
+      <div class="phase-block">
+        <h4>What We Did</h4>
+        <ul>
+          <li>Identified the pain: contractors paying $12K+/yr for software they don't own</li>
+          <li>Named the company: Tektora AI ("builder" in Greek)</li>
+          <li>Built the brand: logo, domain (tektora.ai), visual identity</li>
+          <li>Built the website: $40K-quality, 3,500+ lines, scroll animations</li>
+          <li>Defined the offer: $3,500 / $7,500 / $12,000 tiers</li>
+          <li>Positioned as anti-SaaS: "Stop Renting Software. Start Owning It."</li>
+          <li>Rewired Mason's entire architecture for Tektora-only focus</li>
+        </ul>
+      </div>
+      <div class="phase-block">
+        <h4>Martell Principle</h4>
+        <ul>
+          <li>"Stop throwing bodies at problems" — 1 person + AI agents</li>
+          <li>"Fall in love with the problem, not the product"</li>
+          <li>Picked a growing market immune to AI displacement</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE 2: $0 → $60K (CURRENT) -->
+<div class="phase">
+  <div class="phase-dot current" style="background: #EF4444; --dot-color: #EF4444; top: 30px;"></div>
+  <div class="phase-card" style="--accent: #EF4444; border-color: rgba(239,68,68,0.3);">
+    <div class="you-are-here">🔴 YOU ARE HERE — March 13, 2026</div>
+    <div class="phase-header">
+      <span class="phase-step" style="background: rgba(239,68,68,0.2); color: #EF4444;">STEP 3</span>
+    </div>
+    <div class="phase-revenue" style="color: #EF4444;">$0 → $60K</div>
+    <div class="phase-title">Solve Manually — Get Paid to Learn</div>
+    <div class="phase-timeline">TARGET: March 13-22 (10-day sprint)</div>
+    <div class="phase-grid">
+      <div class="phase-block">
+        <h4>The Play</h4>
+        <ul>
+          <li>Get 10 contractor advice calls (NOT sales calls)</li>
+          <li>"I'm building AI tools for contractors. Can I get 15 min of your time?"</li>
+          <li>Validate: what tools they pay for, what they hate, what they'd switch for</li>
+          <li>Present the done-for-you offer to those 10 contacts</li>
+          <li>Close first 5-10 clients at $3,500-$12,000 each</li>
+          <li>Build their tools BY HAND using Claude Code + Lovable + Bolt</li>
+          <li>Document every step — this becomes the template</li>
+        </ul>
+      </div>
+      <div class="phase-block">
+        <h4>Mason's Role</h4>
+        <ul>
+          <li>Pull 50-contractor prospect list from Apollo.io</li>
+          <li>Write the advice call script</li>
+          <li>Build each client's tools when Boss closes the deal</li>
+          <li>Track build times, client feedback, tool requests</li>
+          <li>Set up booking system (Cal.com or Calendly)</li>
+        </ul>
+      </div>
+      <div class="phase-block">
+        <h4>Martell Principle</h4>
+        <ul>
+          <li>"Get paid before you build anything"</li>
+          <li>"If you call for advice, you'll get a sale"</li>
+          <li>Solve manually → learn the workflow → THEN automate</li>
+        </ul>
+      </div>
+    </div>
+    <div class="metrics-row">
+      <div class="metric"><div class="num" style="color:#EF4444">10</div><div class="label">Advice Calls</div></div>
+      <div class="metric"><div class="num" style="color:#EF4444">5-10</div><div class="label">First Clients</div></div>
+      <div class="metric"><div class="num" style="color:#EF4444">$60K</div><div class="label">Revenue Target</div></div>
+      <div class="metric"><div class="num" style="color:#EF4444">10 days</div><div class="label">Sprint Length</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE 3: $60K → $100K -->
+<div class="phase">
+  <div class="phase-dot" style="background: #F59E0B; --dot-color: #F59E0B; top: 30px;"></div>
+  <div class="phase-card" style="--accent: #F59E0B;">
+    <div class="phase-header">
+      <span class="phase-step" style="background: rgba(245,158,11,0.2); color: #F59E0B;">STEP 4</span>
+    </div>
+    <div class="phase-revenue" style="color: #F59E0B;">$60K → $100K</div>
+    <div class="phase-title">Clickable Prototype — Prove It Works</div>
+    <div class="phase-timeline">TARGET: March 22 - April 5, 2026</div>
+    <div class="phase-grid">
+      <div class="phase-block">
+        <h4>The Play</h4>
+        <ul>
+          <li>From the 10 calls: identify top 3 most-requested tools</li>
+          <li>Build live demos of those 3 tools (working prototypes, not mockups)</li>
+          <li>Get in front of 5 NEW contractors — record their reactions</li>
+          <li>"You'll learn more in 5 customer calls than 5 weeks of coding"</li>
+          <li>Refine pricing based on what people actually want to pay</li>
+          <li>Start building the swipe file of contractor pain points</li>
+        </ul>
+      </div>
+      <div class="phase-block">
+        <h4>Mason's Role</h4>
+        <ul>
+          <li>Build the 3 demo tools in Lovable/Claude Code</li>
+          <li>Create demo walkthroughs and screen recordings</li>
+          <li>Analyze call recordings for patterns</li>
+          <li>Start templatizing the build process</li>
+        </ul>
+      </div>
+    </div>
+    <div class="metrics-row">
+      <div class="metric"><div class="num" style="color:#F59E0B">3</div><div class="label">Demo Tools Built</div></div>
+      <div class="metric"><div class="num" style="color:#F59E0B">5</div><div class="label">New Prospects</div></div>
+      <div class="metric"><div class="num" style="color:#F59E0B">$100K</div><div class="label">Total Revenue</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE 4: $100K → $500K -->
+<div class="phase">
+  <div class="phase-dot" style="background: #2563EB; --dot-color: #2563EB; top: 30px;"></div>
+  <div class="phase-card" style="--accent: #2563EB;">
+    <div class="phase-header">
+      <span class="phase-step" style="background: rgba(37,99,235,0.2); color: #2563EB;">STEP 5</span>
+    </div>
+    <div class="phase-revenue" style="color: #2563EB;">$100K → $500K</div>
+    <div class="phase-title">MVP — Templatize & Systematize</div>
+    <div class="phase-timeline">TARGET: April - August 2026</div>
+    <div class="phase-grid">
+      <div class="phase-block">
+        <h4>The Play</h4>
+        <ul>
+          <li>Templatize the top 5 tools (4-8 hour builds, not 2 days)</li>
+          <li>Build a "tool library" — pre-built components that snap together</li>
+          <li>Create the handover system (code repo + hosting + account transfer)</li>
+          <li>Raise prices: Starter $5K → Growth $10K → Full Stack $15K</li>
+          <li>Add recurring: managed hosting $197/mo, quarterly upgrades $1,500</li>
+          <li>Target: 30-50 clients at higher price point</li>
+          <li>80% of revenue comes from the system, not custom work</li>
+        </ul>
+      </div>
+      <div class="phase-block">
+        <h4>Mason's Role</h4>
+        <ul>
+          <li>Automate outreach with AI agents (Apollo → email sequences)</li>
+          <li>Build the template library for rapid deployment</li>
+          <li>Handle client onboarding with standardized process</li>
+          <li>Track KPIs: build time, client satisfaction, referral rate</li>
+          <li>Run automated follow-up for upsells (maintenance, upgrades)</li>
+        </ul>
+      </div>
+      <div class="phase-block">
+        <h4>Martell Principle</h4>
+        <ul>
+          <li>Core features only — "will this impact 80% of users?"</li>
+          <li>Facebook started with one college. Amazon started with books.</li>
+          <li>"Complexity kills more businesses than competition"</li>
+        </ul>
+      </div>
+    </div>
+    <div class="metrics-row">
+      <div class="metric"><div class="num" style="color:#2563EB">50</div><div class="label">Clients</div></div>
+      <div class="metric"><div class="num" style="color:#2563EB">4-8 hrs</div><div class="label">Per Build</div></div>
+      <div class="metric"><div class="num" style="color:#2563EB">$500K</div><div class="label">Revenue</div></div>
+      <div class="metric"><div class="num" style="color:#2563EB">0</div><div class="label">Employees</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE 5: $500K → $1M -->
+<div class="phase">
+  <div class="phase-dot" style="background: #6B21A8; --dot-color: #6B21A8; top: 30px;"></div>
+  <div class="phase-card" style="--accent: #6B21A8;">
+    <div class="phase-header">
+      <span class="phase-step" style="background: rgba(107,33,168,0.2); color: #A855F7;">STEP 6</span>
+    </div>
+    <div class="phase-revenue" style="color: #A855F7;">$500K → $1M</div>
+    <div class="phase-title">Scale with AI Agents, Not Headcount</div>
+    <div class="phase-timeline">TARGET: September 2026 - March 2027</div>
+    <div class="phase-grid">
+      <div class="phase-block">
+        <h4>The Play</h4>
+        <ul>
+          <li>$83K/month target (Martell's benchmark: 1 founder + 2 part-time contractors)</li>
+          <li>AI agents handle: outreach, onboarding, builds, follow-up, support</li>
+          <li>Boss focuses ONLY on: strategy, high-ticket sales, partnerships</li>
+          <li>Expand beyond contractors: plumbers, HVAC, electricians, roofers, landscapers</li>
+          <li>Launch referral program (clients bring clients)</li>
+          <li>Build case studies from first 50 clients</li>
+          <li>Consider hiring 1-2 part-time builders (first human help)</li>
+        </ul>
+      </div>
+      <div class="phase-block">
+        <h4>Mason's Role</h4>
+        <ul>
+          <li>Full AI agent orchestration — intake to delivery automated</li>
+          <li>Automated client success tracking and retention</li>
+          <li>Content generation for marketing (case studies, social proof)</li>
+          <li>Financial tracking, pipeline management, forecasting</li>
+          <li>Quality control on all builds before handover</li>
+        </ul>
+      </div>
+    </div>
+    <div class="metrics-row">
+      <div class="metric"><div class="num" style="color:#A855F7">$83K</div><div class="label">/Month</div></div>
+      <div class="metric"><div class="num" style="color:#A855F7">100+</div><div class="label">Clients</div></div>
+      <div class="metric"><div class="num" style="color:#A855F7">~95%</div><div class="label">Margin</div></div>
+      <div class="metric"><div class="num" style="color:#A855F7">1</div><div class="label">Human Employee</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE 6: $1M → $10M -->
+<div class="phase">
+  <div class="phase-dot" style="background: #06B6D4; --dot-color: #06B6D4; top: 30px;"></div>
+  <div class="phase-card" style="--accent: #06B6D4;">
+    <div class="phase-header">
+      <span class="phase-step" style="background: rgba(6,182,212,0.2); color: #06B6D4;">BEYOND</span>
+    </div>
+    <div class="phase-revenue" style="color: #06B6D4;">$1M → $10M</div>
+    <div class="phase-title">The Platform Play</div>
+    <div class="phase-timeline">TARGET: 2027 - 2028</div>
+    <div class="phase-grid">
+      <div class="phase-block">
+        <h4>The Play</h4>
+        <ul>
+          <li>Transition from build shop → PLATFORM</li>
+          <li>Tektora Platform: contractors self-serve, pick tools from library, deploy instantly</li>
+          <li>Think Shopify for contractor AI tools — pick, customize, own</li>
+          <li>Marketplace: other builders contribute tools, Tektora takes 20% cut</li>
+          <li>Expand to all trades, then all service businesses</li>
+          <li>Annual recurring from platform fees ($99-$299/mo)</li>
+          <li>Thousands of businesses on the platform</li>
+          <li>Maybe 5-10 employees total (engineering + support)</li>
+        </ul>
+      </div>
+      <div class="phase-block">
+        <h4>Why This Works</h4>
+        <ul>
+          <li>We already built 100+ custom tools → best data on what contractors actually need</li>
+          <li>Templates are battle-tested from real client builds</li>
+          <li>Network effects: more builders → more tools → more customers</li>
+          <li>Recurring revenue at scale = massive valuation multiplier</li>
+        </ul>
+      </div>
+    </div>
+    <div class="metrics-row">
+      <div class="metric"><div class="num" style="color:#06B6D4">$833K</div><div class="label">/Month</div></div>
+      <div class="metric"><div class="num" style="color:#06B6D4">5,000+</div><div class="label">Platform Users</div></div>
+      <div class="metric"><div class="num" style="color:#06B6D4">20%</div><div class="label">Marketplace Cut</div></div>
+      <div class="metric"><div class="num" style="color:#06B6D4">5-10</div><div class="label">Employees</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE 7: $10M → $1B -->
+<div class="phase">
+  <div class="phase-dot" style="background: linear-gradient(135deg, #F59E0B, #EF4444); --dot-color: #F59E0B; top: 30px;"></div>
+  <div class="phase-card" style="--accent: #F59E0B; border-color: rgba(245,158,11,0.2);">
+    <div class="phase-header">
+      <span class="phase-step" style="background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(239,68,68,0.2)); color: #F59E0B;">🦄 UNICORN</span>
+    </div>
+    <div class="phase-revenue" style="background: linear-gradient(135deg, #F59E0B, #EF4444); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">$10M → $1B</div>
+    <div class="phase-title">The Tektora Operating System</div>
+    <div class="phase-timeline">TARGET: 2028 - 2032</div>
+    <div class="phase-grid">
+      <div class="phase-block">
+        <h4>The Vision</h4>
+        <ul>
+          <li>Tektora becomes the OPERATING SYSTEM for service businesses</li>
+          <li>Not just tools — the entire business stack: CRM, scheduling, invoicing, marketing, AI agents, everything</li>
+          <li>AI-first from day one (competitors retrofitting AI onto legacy software)</li>
+          <li>Every contractor, plumber, electrician, roofer, landscaper, painter in America runs on Tektora</li>
+          <li>3.7 million contractor businesses × $200/mo = $8.9B TAM</li>
+          <li>Expand internationally</li>
+        </ul>
+      </div>
+      <div class="phase-block">
+        <h4>Why $1B Is Possible</h4>
+        <ul>
+          <li>Bilyeu's thesis: AI is the biggest wealth transfer in history</li>
+          <li>Construction is the LAST major industry to be digitized</li>
+          <li>Jobber valued at $735M — and they don't even use AI</li>
+          <li>ServiceTitan IPO'd at $9B — and they charge $400-$2,000/mo</li>
+          <li>We start with OWNERSHIP (trust) → convert to platform (retention)</li>
+          <li>The "own it" positioning is a Trojan horse — they trust us, then they stay</li>
+          <li>First mover in "AI-native tools for trades" = category creator</li>
+        </ul>
+      </div>
+      <div class="phase-block">
+        <h4>The Bilyeu Urgency</h4>
+        <ul>
+          <li>"The people who see these transitions clearly and position early come out ahead for an entire generation"</li>
+          <li>Construction is immune to AI displacement but NEEDS AI tools</li>
+          <li>We're building on the right side of the K-shaped economy</li>
+          <li>The window is NOW — in 2 years, everyone will try this</li>
+          <li>Speed + trust + execution = category dominance</li>
+        </ul>
+      </div>
+    </div>
+    <div class="metrics-row">
+      <div class="metric"><div class="num" style="color:#F59E0B">$1B</div><div class="label">Valuation</div></div>
+      <div class="metric"><div class="num" style="color:#F59E0B">100K+</div><div class="label">Businesses</div></div>
+      <div class="metric"><div class="num" style="color:#F59E0B">$100M+</div><div class="label">ARR</div></div>
+      <div class="metric"><div class="num" style="color:#F59E0B">50-100</div><div class="label">Employees</div></div>
+    </div>
+  </div>
+</div>
+
+</section>
+
+<!-- SUMMARY -->
+<section class="summary">
+  <h2>The Math Is <span class="gradient" style="background: linear-gradient(135deg, #6B21A8, #2563EB, #06B6D4); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Simple</span></h2>
+  
+  <div class="scale-grid">
+    <div class="scale-card">
+      <div class="sc-num" style="color: #EF4444;">$60K</div>
+      <div class="sc-label">Sprint 1 (10 days)</div>
+      <div class="sc-detail">10 clients × $6K average. Manual builds. Learning the workflow. Getting paid to figure it out.</div>
+    </div>
+    <div class="scale-card">
+      <div class="sc-num" style="color: #F59E0B;">$500K</div>
+      <div class="sc-label">First 6 months</div>
+      <div class="sc-detail">50 clients × $10K average. Templatized builds. 4-8 hours each. Zero employees.</div>
+    </div>
+    <div class="scale-card">
+      <div class="sc-num" style="color: #2563EB;">$1M</div>
+      <div class="sc-label">Year 1</div>
+      <div class="sc-detail">100+ clients. AI agent orchestration. $83K/month. Boss does strategy + sales only.</div>
+    </div>
+    <div class="scale-card">
+      <div class="sc-num" style="color: #06B6D4;">$10M</div>
+      <div class="sc-label">Year 2-3</div>
+      <div class="sc-detail">Platform play. Self-serve marketplace. Thousands of businesses. 5-10 employees.</div>
+    </div>
+    <div class="scale-card">
+      <div class="sc-num" style="background: linear-gradient(135deg, #F59E0B, #EF4444); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">$1B</div>
+      <div class="sc-label">Year 5-7</div>
+      <div class="sc-detail">The operating system for service businesses. 100K+ businesses. Category creator. IPO or acquisition.</div>
+    </div>
+  </div>
+
+  <div style="margin-top: 80px;">
+    <p class="quote">"The next wave of billion-dollar companies won't have 100 employees. They won't have 50. They'll have one."</p>
+    <p class="attr">— Dan Martell</p>
+  </div>
+
+  <div style="margin-top: 40px;">
+    <p class="quote">"The people who see these transitions clearly and position themselves early don't just survive them. They come out ahead — way ahead — for an entire generation."</p>
+    <p class="attr">— Tom Bilyeu</p>
+  </div>
+
+  <div style="margin-top: 60px; font-family: 'JetBrains Mono', monospace; color: #71717a; font-size: 0.85rem;">
+    Team: Johnathan Eaddy + Mason AI<br>
+    Headcount: 1<br>
+    Start Date: March 13, 2026<br>
+    Current Revenue: $0<br>
+    Target: $1,000,000,000
+  </div>
+</section>
+
+<div style="height: 100px;"></div>
+
+</body>
+</html>
